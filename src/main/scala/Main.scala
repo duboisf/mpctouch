@@ -27,7 +27,7 @@ object WebRunner {
     val holder:ServletHolder = new ServletHolder(classOf[ServletContainer])
     holder.setInitParameter("com.sun.jersey.config.property.resourceConfigClass",
                             "com.sun.jersey.api.core.PackagesResourceConfig")
-    holder.setInitParameter(PROPERTY_PACKAGES, "marcus.test")
+    holder.setInitParameter(PROPERTY_PACKAGES, "org.reliant.mpctouch")
     val context = new ServletContextHandler(server, "/", ServletContextHandler.SESSIONS)
     context.addServlet(holder, "/*")
     server.start
