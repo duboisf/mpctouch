@@ -27,18 +27,11 @@ object WebRunner {
     val holder:ServletHolder = new ServletHolder(classOf[ServletContainer])
     holder.setInitParameter("com.sun.jersey.config.property.resourceConfigClass",
                             "com.sun.jersey.api.core.PackagesResourceConfig")
-    holder.setInitParameter(PROPERTY_PACKAGES, "org.reliant.mpctouch")
+    holder.setInitParameter(PROPERTY_PACKAGES, "org.reliant.mpctouch.rest")
     val context = new ServletContextHandler(server, "/", ServletContextHandler.SESSIONS)
-    context.addServlet(holder, "/*")
+    context.addServlet(holder, "/ressources/*")
     server.start
     server.join
   }
-}
-
-
-@Path("/helloworld")
-class TestResource {
-  @GET
-  def hello() = "HELLO!!"
 }
 
