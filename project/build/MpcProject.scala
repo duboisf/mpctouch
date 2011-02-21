@@ -8,4 +8,6 @@ class MpcBuild(info: ProjectInfo) extends DefaultWebProject(info) {
   val mpd = "org.reliant" % "scalampd_2.8.1" % "1.0" % "compile"
 
   val javaNetRepo = "Java.net Repository for Maven" at "http://download.java.net/maven/2/"
+
+  override def scanDirectories = Nil
 }
