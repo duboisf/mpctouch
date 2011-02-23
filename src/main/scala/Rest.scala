@@ -3,45 +3,51 @@ package org.reliant.mpctouch.rest
 import javax.ws.rs.{GET,POST,PUT,Produces,Path,PathParam,FormParam,WebApplicationException}
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
 
-@Path("/mpd")
+@Path("/player")
 @Produces(Array(APPLICATION_JSON))
 class Playback {
-  import org.reliant.mpctouch.mpd.MpdApi.mpd.player
+  import org.reliant.mpctouch.mpd._
 
   private val SUCCESS = "{\"success\":true}"
 
-  @POST
+  @GET
   @Path("/play/{pos}")
-  def play = {
-    player play 0
+  def play(@PathParam("pos") pos: Int) = {
+    Mpd ! Play(pos)
     SUCCESS
   }
 
   @POST
   @Path("/playid/{id}")
   def playid(@PathParam("id") id: Int) = {
-    player playid id
+    Mpd ! PlayId(id)
     SUCCESS
   }
 
   @PUT
   @Path("/stop")
   def stop = {
-    player.stop
+    Mpd ! Stop
     SUCCESS
   }
 
   @POST
   @Path("/next")
   def next = {
-    player.next
+    Mpd ! Next
     SUCCESS
   }
 
   @POST
   @Path("/prev")
   def previous = {
-    player.prev
+    Mpd ! Prev
     SUCCESS
   }
+}
+
+@Path("/status")
+@Produces(Array(APPLICATION_JSON))
+class Status {
+
 }
