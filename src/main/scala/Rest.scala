@@ -1,10 +1,11 @@
 package org.reliant.mpctouch.rest
 
+import org.atmosphere.annotation.Suspend
 import javax.ws.rs.{GET,POST,PUT,Produces,Path,PathParam,FormParam,WebApplicationException}
-import javax.ws.rs.core.MediaType.APPLICATION_JSON
+import javax.ws.rs.core.MediaType
 
 @Path("/player")
-@Produces(Array(APPLICATION_JSON))
+@Produces(Array("application/json"))
 class Playback {
   import org.reliant.mpctouch.mpd._
 
@@ -17,7 +18,7 @@ class Playback {
     SUCCESS
   }
 
-  @POST
+  @GET
   @Path("/playid/{id}")
   def playid(@PathParam("id") id: Int) = {
     Mpd ! PlayId(id)
@@ -47,7 +48,11 @@ class Playback {
 }
 
 @Path("/status")
-@Produces(Array(APPLICATION_JSON))
+@Produces(Array("application/json"))
 class Status {
-
+  
+  @GET
+  @Suspend(resumeOnBroadcast=true)
+  def status() = "{\"success\": true}"
+  
 }
