@@ -1,8 +1,11 @@
 package org.reliant.mpctouch.rest
 
-import org.atmosphere.annotation.Suspend
+import org.atmosphere.annotation.{Broadcast,Suspend}
+import org.atmosphere.cpr.BroadcasterFactory
+import org.atmosphere.jersey.JerseyBroadcaster
 import javax.ws.rs.{GET,POST,PUT,Produces,Path,PathParam,FormParam,WebApplicationException}
 import javax.ws.rs.core.MediaType
+import javax.ws.rs.core.Context
 
 @Path("/player")
 @Produces(Array("application/json"))
@@ -25,34 +28,39 @@ class Playback {
     SUCCESS
   }
 
-  @PUT
+  @GET
   @Path("/stop")
   def stop = {
     Mpd ! Stop
     SUCCESS
   }
 
-  @POST
+  @GET
   @Path("/next")
   def next = {
     Mpd ! Next
     SUCCESS
   }
 
-  @POST
+  @GET
   @Path("/prev")
   def previous = {
     Mpd ! Prev
     SUCCESS
   }
+
+  @GET
+  @Broadcast
+  @Path("/test")
+  def test = {
+    "{'success': 'true'}"
+  }
 }
 
 @Path("/status")
-@Produces(Array("application/json"))
 class Status {
-  
+
   @GET
   @Suspend(resumeOnBroadcast=true)
-  def status() = "{\"success\": true}"
-  
+  def status() = ""
 }
