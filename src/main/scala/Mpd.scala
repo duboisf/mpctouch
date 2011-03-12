@@ -2,6 +2,7 @@ package org.reliant.mpctouch.mpd
 
 import grizzled.slf4j.Logging
 import java.net.ConnectException
+import org.atmosphere.cpr.BroadcasterFactory
 import scala.actors.Actor
 
 case class Play(pos: Int)
@@ -26,7 +27,7 @@ object Mpd extends Actor with Logging {
           info(this + " got play(" + pos + ") msg")
           player play pos
           import org.atmosphere.jersey._
-          val b = new JerseyBroadcaster().broadcast("BLAH")
+          BroadcasterFactory.getDefault().lookup(classOf[JerseyBroadcaster], "status").broadcast("blah")
         }
         case PlayId(id) => {
           debug(this + " got playid(" + id + ") msg")

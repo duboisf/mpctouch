@@ -62,5 +62,7 @@ class Status {
 
   @GET
   @Suspend(resumeOnBroadcast=true)
-  def status() = ""
+  def status() = {
+    ""
+  }
 }
