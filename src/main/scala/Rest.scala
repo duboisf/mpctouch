@@ -1,8 +1,11 @@
 package org.reliant.mpctouch.rest
 
 import org.atmosphere.annotation.{Broadcast,Suspend}
-import org.atmosphere.cpr.BroadcasterFactory
-import org.atmosphere.jersey.JerseyBroadcaster
+import org.atmosphere.cpr.{BroadcasterFactory,DefaultBroadcaster}
+import org.atmosphere.jersey.{Broadcastable,JerseyBroadcaster}
+
+import org.reliant.mpctouch.mpd.{BroadcasterPoller,Run,Stop}
+
 import javax.ws.rs.{GET,POST,PUT,Produces,Path,PathParam,FormParam,WebApplicationException}
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Context
@@ -62,7 +65,27 @@ class Status {
 
   @GET
   @Suspend(resumeOnBroadcast=true)
-  def status() = {
-    ""
+  def status = {
+    val b = new DefaultBroadcaster("status")
+    new Broadcastable("success", b)
   }
+
+  @GET
+  @Path("/run")
+  def run = {
+    BroadcasterPoller ! Run
+    "success"
+  }
+
+  @GET
+  @Path("/stop")
+  def stop = {
+    BroadcasterPoller ! Stop
+    "success"
+  }
+
+  @GET
+  @Path("/{topic}")
+  def test(@PathParam("topic") topic: String) =
+    new Broadcastable(topic, new DefaultBroadcaster(topic))
 }
